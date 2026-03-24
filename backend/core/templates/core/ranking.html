@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ranking do Bolão</title>
+</head>
+<body>
+
+    <h1>🏆 Ranking do Bolão</h1>
+
+    <table border="1">
+        <tr>
+            <th>Posição</th>
+            <th>Participante</th>
+            <th>Pontos</th>
+            <th>Placar Exato</th>
+            <th>Acertos</th>
+        </tr>
+
+        {% for p in participantes %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ p.usuario.username }}</td>
+            <td>{{ p.total_pontos }}</td>
+            <td>{{ p.total_placar_exato }}</td>
+            <td>{{ p.total_resultado }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
