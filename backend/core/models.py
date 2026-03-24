@@ -12,6 +12,28 @@ class Participante(models.Model):
 
     def __str__(self):
         return self.user.username
+    def atualizar_pontuacao(self):
+        palpites = self.palpite_set.all()
+
+        total_pontos = 0
+        total_exato = 0
+        total_resultado = 0
+
+        for palpite in palpites:
+            pontos = palpite.calcular_pontos()
+
+            total_pontos += pontos
+
+            if pontos == 5:
+                total_exato += 1
+            elif pontos in [1, 3]:
+                total_resultado += 1
+
+        self.total_pontos = total_pontos
+        self.total_placar_exato = total_exato
+        self.total_resultado = total_resultado
+
+        self.save()
 
 
 class Rodada(models.Model):
@@ -73,3 +95,9 @@ class Palpite(models.Model):
 
     def __str__(self):
         return f"{self.participante} - {self.jogo}"
+    
+    def save(self, *args, **kwargs):
+        self.pontos = self.calcular_pontos()
+        super().save(*args, **kwargs)
+
+        self.participante.atualizar_pontuacao()
